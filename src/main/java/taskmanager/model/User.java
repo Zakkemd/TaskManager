@@ -25,7 +25,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks = new ArrayList<>();
 
-
     // konstruktory, gettery, settery
 
 
@@ -68,8 +67,11 @@ public class User {
         this.email = email;
     }
 
+    public List<Task> getTasks() {
+        return tasks;
+    }
 
-
-
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
 }
-

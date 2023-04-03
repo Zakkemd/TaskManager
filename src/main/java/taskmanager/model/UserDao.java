@@ -1,21 +1,17 @@
 package taskmanager.model;
 
-import javax.ejb.Stateless;
+import org.springframework.stereotype.Repository;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-@Stateless
+@Repository
 public class UserDao {
 
     @PersistenceContext
     private EntityManager entityManager;
-
-
-    public UserDao(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
 
     public void addUser(User user) {
         entityManager.persist(user);
@@ -35,7 +31,6 @@ public class UserDao {
         } else {
             return users.get(0);
         }
-
     }
 
     public void removeUser(User user) {
