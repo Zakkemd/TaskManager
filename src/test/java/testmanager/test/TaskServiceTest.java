@@ -5,34 +5,32 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
-import taskmanager.config.ApplicationConfig;
+import taskmanager.app.MainApplication;
 import taskmanager.model.Task;
 import taskmanager.model.User;
-import taskmanager.service.TaskService;
-import taskmanager.service.UserService;
+import taskmanager.repository.TaskRepository;
+import taskmanager.repository.UserRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = {ApplicationConfig.class})
+@SpringBootTest(classes = {MainApplication.class})
 public class TaskServiceTest {
 
     @Autowired
-    private TaskService taskService;
+    private TaskRepository taskRepository;
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
 
     @Test
-    @Transactional
     public void testAddTask() {
         User user = new User();
         user.setUsername("testuser");
         user.setEmail("testuser@example.com");
         user.setPassword("password");
 
-        userService.addUser(user);
+        userRepository.save(user);
 
         Task task = new Task();
         task.setName("Example Task");
@@ -40,9 +38,10 @@ public class TaskServiceTest {
         task.setStatus("New");
         task.setUser(user);
 
-        taskService.addTask(task);
+        taskRepository.save(task);
 
-        Task savedTask = taskService.getTaskById(task.getId());
+        Task savedTask = taskRepository.findById(task.getId()).orElse(null);
         assertEquals(task, savedTask);
     }
 }
+
