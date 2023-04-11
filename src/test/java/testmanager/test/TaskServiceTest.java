@@ -5,11 +5,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import taskmanager.app.MainApplication;
+import taskmanager.MainApplication;
 import taskmanager.model.Task;
 import taskmanager.model.User;
-import taskmanager.repository.TaskRepository;
-import taskmanager.repository.UserRepository;
+import taskmanager.service.TaskService;
+import taskmanager.service.UserService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TaskServiceTest {
 
     @Autowired
-    private TaskRepository taskRepository;
+    private TaskService taskService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Test
     public void testAddTask() {
@@ -30,7 +30,7 @@ public class TaskServiceTest {
         user.setEmail("testuser@example.com");
         user.setPassword("password");
 
-        userRepository.save(user);
+        userService.addUser(user);
 
         Task task = new Task();
         task.setName("Example Task");
@@ -38,10 +38,9 @@ public class TaskServiceTest {
         task.setStatus("New");
         task.setUser(user);
 
-        taskRepository.save(task);
+        taskService.addTask(task);
 
-        Task savedTask = taskRepository.findById(task.getId()).orElse(null);
+        Task savedTask = taskService.getTaskByID(task.getId());
         assertEquals(task, savedTask);
     }
 }
-

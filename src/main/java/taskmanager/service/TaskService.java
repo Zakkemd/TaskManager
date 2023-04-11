@@ -2,6 +2,7 @@ package taskmanager.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import taskmanager.model.Task;
 import taskmanager.model.User;
 import taskmanager.repository.TaskRepository;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Transactional
 public class TaskService {
 
     @Autowired

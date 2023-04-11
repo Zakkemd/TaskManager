@@ -1,10 +1,10 @@
 package taskmanager.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -21,27 +21,20 @@ import java.util.Properties;
 @EntityScan(basePackages = "taskmanager.model")
 public class ApplicationConfig {
 
-    @Bean
-    public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/expensetrack");
-        dataSource.setUsername("root");
-        dataSource.setPassword("123Laptop!");
-        return dataSource;
-    }
+    @Autowired
+    private DataSource dataSource;
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setDataSource(dataSource());
-        factory.setPackagesToScan("taskmanager.model");
+        factory.setDataSource(dataSource);
         factory.setJpaProperties(additionalProperties());
 
         return factory;
     }
+
 
     private Properties additionalProperties() {
         Properties properties = new Properties();

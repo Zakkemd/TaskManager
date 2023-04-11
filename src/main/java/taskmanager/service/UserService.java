@@ -2,12 +2,14 @@ package taskmanager.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import taskmanager.model.User;
 import taskmanager.repository.UserRepository;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class UserService {
 
     @Autowired
