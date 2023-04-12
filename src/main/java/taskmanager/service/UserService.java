@@ -1,6 +1,5 @@
 package taskmanager.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import taskmanager.model.User;
@@ -12,11 +11,14 @@ import java.util.List;
 @Transactional
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public void addUser(User user) {
-        userRepository.save(user);
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public User addUser(User user) {
+        return userRepository.save(user);
     }
 
     public User getUserByID(Long id) {
