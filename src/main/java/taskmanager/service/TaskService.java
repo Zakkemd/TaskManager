@@ -1,6 +1,5 @@
 package taskmanager.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import taskmanager.model.Task;
@@ -14,8 +13,11 @@ import java.util.List;
 @Transactional
 public class TaskService {
 
-    @Autowired
-    private TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
+
+    public TaskService(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
+    }
 
     public void addTask(Task task) {
         taskRepository.save(task);

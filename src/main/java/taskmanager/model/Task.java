@@ -82,4 +82,29 @@ public class Task {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public Task withId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public Task withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public Task withDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public Task withDeadline(LocalDateTime deadline) {
+        this.deadline = deadline;
+        return this;
+    }
+
+    public Task withStatus(String status) {
+        this.status = status;
+        return this;
+    }
 }
