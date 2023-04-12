@@ -1,5 +1,6 @@
 package taskmanager.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("id")
     private Long id;
 
     @Column(nullable = false)
@@ -112,5 +114,18 @@ public class Task {
         this.user = user;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", deadline=" + deadline +
+                ", status='" + status + '\'' +
+                ", user=" + user +
+                '}';
+    }
+
 
 }

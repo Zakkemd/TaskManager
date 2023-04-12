@@ -1,5 +1,7 @@
 package taskmanager.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import taskmanager.model.Task;
@@ -14,12 +16,17 @@ import java.util.List;
 public class TaskService {
 
     private final TaskRepository taskRepository;
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaskService.class);
+
 
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
 
     public Task addTask(Task task) {
+        LOGGER.info("Saved task: {}", task);
+
+
         return taskRepository.save(task);
     }
 
@@ -50,4 +57,6 @@ public class TaskService {
     public List<Task> getTasksByDeadlineRange(LocalDateTime start, LocalDateTime end) {
         return taskRepository.findByDeadlineBetween(start, end);
     }
+
+
 }

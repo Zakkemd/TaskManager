@@ -90,6 +90,11 @@ public class User {
         return this;
     }
 
+    public User withId(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public User setId(Long id) {
         this.id = id;
         return this;

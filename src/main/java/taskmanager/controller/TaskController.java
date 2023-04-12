@@ -1,5 +1,7 @@
 package taskmanager.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,9 @@ public class TaskController {
 
     private final TaskService taskService;
     private final UserService userService;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaskController.class);
+
 
     @Autowired
     public TaskController(TaskService taskService, UserService userService) {
@@ -63,8 +68,11 @@ public class TaskController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Task> addTask(@RequestBody Task task) {
         Task createdTask = taskService.addTask(task);
+        LOGGER.info("Created task: {}", createdTask);
+
         return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
     }
 
