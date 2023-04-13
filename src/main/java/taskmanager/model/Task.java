@@ -1,13 +1,19 @@
 package taskmanager.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tasks")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Task {
 
     @Id
@@ -15,15 +21,19 @@ public class Task {
     @JsonProperty("id")
     private Long id;
 
+    @NotBlank(message = "Name is required")
     @Column(nullable = false)
     private String name;
 
     private String description;
 
+    @NotNull(message = "Deadline is required")
+    @Future(message = "Deadline must be in the future")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @Column(nullable = false)
     private LocalDateTime deadline;
 
+    @NotBlank(message = "Status is required")
     @Column(nullable = false)
     private String status;
 
@@ -31,6 +41,7 @@ public class Task {
     @JoinColumn(name = "user_id")
     private User user;
 
+    // Constructors, getters, setters, and other methods
     public Task() {
     }
 
@@ -77,9 +88,13 @@ public class Task {
         this.status = status;
     }
 
+
+
+    @JsonIgnore
     public User getUser() {
         return user;
     }
+
 
     public void setUser(User user) {
         this.user = user;

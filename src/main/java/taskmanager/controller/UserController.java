@@ -3,11 +3,13 @@ package taskmanager.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import taskmanager.model.User;
 import taskmanager.repository.UserRepository;
 import taskmanager.service.UserService;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,7 +52,10 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addUser(@RequestBody User user) {
+    public ResponseEntity<Void> addUser(@Valid @RequestBody User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new ValidationException();
+        }
         userService.addUser(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -64,5 +69,13 @@ public class UserController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<Void> handleValidationException() {
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    public static class ValidationException extends RuntimeException {
     }
 }

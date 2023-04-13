@@ -1,6 +1,9 @@
 package taskmanager.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,20 +15,25 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Username is required")
+    @Size(min = 3, max = 50, message = "Username must be between 3 and 30 characters")
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
+    @NotBlank(message = "Password is required")
+    @Size(min = 8, max = 100, message = "Password must be between 8 and 100 characters")
     @Column(name = "password", nullable = false)
     private String password;
 
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email must be valid")
     @Column(name = "email", unique = true, nullable = false)
     private String email;
-
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks = new ArrayList<>();
 
-    // konstruktory, gettery, settery
+    // Constructors, getters, setters, and other methods
 
 
     public User() {

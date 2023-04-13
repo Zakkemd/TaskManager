@@ -25,10 +25,11 @@ public class TaskService {
 
     public Task addTask(Task task) {
         LOGGER.info("Saved task: {}", task);
-
-
-        return taskRepository.save(task);
+        Task savedTask = taskRepository.save(task);
+        LOGGER.info("Saved task with ID: {}", savedTask.getId());
+        return savedTask;
     }
+
 
     public Task getTaskByID(Long id) {
         return taskRepository.findById(id).orElse(null);

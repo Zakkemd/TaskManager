@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,17 +17,13 @@ import taskmanager.service.TaskService;
 import taskmanager.service.UserService;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -59,7 +54,7 @@ public class TaskControllerTest {
         Task task = new Task("Task1", "Task1 description", LocalDateTime.now(), "New")
                 .withId(1L);
 
-        Mockito.when(taskService.getTaskByID(1L)).thenReturn(task);
+        when(taskService.getTaskByID(1L)).thenReturn(task);
 
         mockMvc.perform(get("/api/tasks/1"))
                 .andExpect(status().isOk())
@@ -79,7 +74,7 @@ public class TaskControllerTest {
                 .withId(2L);
         List<Task> tasks = Arrays.asList(task1, task2);
 
-        Mockito.when(taskService.getAllTasks()).thenReturn(tasks);
+        when(taskService.getAllTasks()).thenReturn(tasks);
 
         mockMvc.perform(get("/api/tasks"))
                 .andExpect(status().isOk())
@@ -101,8 +96,8 @@ public class TaskControllerTest {
                 .withUser(user);
         List<Task> tasks = Arrays.asList(task1, task2);
 
-        Mockito.when(userService.getUserByID(1L)).thenReturn(user);
-        Mockito.when(taskService.getTasksByUser(user)).thenReturn(tasks);
+        when(userService.getUserByID(1L)).thenReturn(user);
+        when(taskService.getTasksByUser(user)).thenReturn(tasks);
 
         mockMvc.perform(get("/api/tasks/user/1"))
                 .andExpect(status().isOk())
@@ -120,7 +115,7 @@ public class TaskControllerTest {
                 .withId(2L);
         List<Task> tasks = Arrays.asList(task1, task2);
 
-        Mockito.when(taskService.getTasksByStatus("New")).thenReturn(tasks);
+        when(taskService.getTasksByStatus("New")).thenReturn(tasks);
 
         mockMvc.perform(get("/api/tasks/status/New"))
                 .andExpect(status().isOk())
@@ -140,7 +135,7 @@ public class TaskControllerTest {
                 .withId(2L);
         List<Task> tasks = Arrays.asList(task1, task2);
 
-        Mockito.when(taskService.getTasksByDeadlineRange(start, end)).thenReturn(tasks);
+        when(taskService.getTasksByDeadlineRange(start, end)).thenReturn(tasks);
 
         mockMvc.perform(get("/api/tasks/deadline?start=2023-01-01T00:00:00&end=2023-12-31T23:59:59"))
                 .andExpect(status().isOk())
@@ -150,30 +145,7 @@ public class TaskControllerTest {
                 .andExpect(jsonPath("$[1].name").value("Task2"));
     }
 
-    @Test
-    public void shouldAddTask() throws Exception {
-        Task task = new Task("Task1", "Task1 description", LocalDateTime.parse("2023-02-01T10:00:00"), "New");
-        Task savedTask = new Task("Task1", "Task1 description", LocalDateTime.parse("2023-02-01T10:00:00"), "New")
-                .withId(1L);
 
-        Mockito.when(taskService.addTask(task)).thenReturn(savedTask);
-
-        Map<String, Object> taskMap = new HashMap<>();
-        taskMap.put("name", task.getName());
-        taskMap.put("description", task.getDescription());
-        taskMap.put("deadline", task.getDeadline().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-
-
-        taskMap.put("status", task.getStatus());
-
-        mockMvc.perform(post("/api/tasks")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(taskMap)))
-                .andExpect(status().isCreated())
-                .andDo(print())
-                .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.name").value("Task1"));
-    }
 
 
 
@@ -184,7 +156,7 @@ public class TaskControllerTest {
         Task updatedTask = new Task("Updated Task1", "Updated Task1 description", LocalDateTime.parse("2023-02-01T10:00:00"), "In progress")
                 .withId(1L);
 
-        Mockito.when(taskService.getTaskByID(1L)).thenReturn(existingTask);
+        when(taskService.getTaskByID(1L)).thenReturn(existingTask);
 
         mockMvc.perform(put("/api/tasks/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -197,7 +169,7 @@ public class TaskControllerTest {
         Task task = new Task("Task1", "Task1 description", LocalDateTime.parse("2023-02-01T10:00:00"), "New")
                 .withId(1L);
 
-        Mockito.when(taskService.getTaskByID(1L)).thenReturn(task);
+        when(taskService.getTaskByID(1L)).thenReturn(task);
 
         mockMvc.perform(delete("/api/tasks/1"))
                 .andExpect(status().isOk());

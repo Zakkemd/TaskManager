@@ -3,14 +3,18 @@ package taskmanager.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import taskmanager.model.Task;
 import taskmanager.model.User;
 import taskmanager.service.TaskService;
 import taskmanager.service.UserService;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,7 +26,6 @@ public class TaskController {
     private final UserService userService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TaskController.class);
-
 
     @Autowired
     public TaskController(TaskService taskService, UserService userService) {
@@ -67,14 +70,18 @@ public class TaskController {
         return new ResponseEntity<>(taskService.getTasksByDeadlineRange(startDate, endDate), HttpStatus.OK);
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Task> addTask(@RequestBody Task task) {
+    @PostMapping("/api/tasks")
+    public ResponseEntity<?> addTask(@Valid @RequestBody Task task, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new ValidationException();
+        }
         Task createdTask = taskService.addTask(task);
-        LOGGER.info("Created task: {}", createdTask);
-
-        return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create("/api/tasks/" + createdTask.getId()));
+        return new ResponseEntity<>(createdTask, headers, HttpStatus.CREATED);
     }
+
+
 
     @PutMapping("/{taskId}")
     public ResponseEntity<Void> updateTask(@PathVariable Long taskId, @RequestBody Task task) {
@@ -103,5 +110,13 @@ public class TaskController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<Void> handleValidationException() {
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    public static class ValidationException extends RuntimeException {
     }
 }
