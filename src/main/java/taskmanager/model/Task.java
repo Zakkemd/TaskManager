@@ -33,9 +33,11 @@ public class Task {
     @Column(nullable = false)
     private LocalDateTime deadline;
 
+    @Enumerated(EnumType.STRING)
     @NotBlank(message = "Status is required")
     @Column(nullable = false)
-    private String status;
+    private TaskStatus status;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -45,7 +47,7 @@ public class Task {
     public Task() {
     }
 
-    public Task(String name, String description, LocalDateTime deadline, String status) {
+    public Task(String name, String description, LocalDateTime deadline, TaskStatus status) {
         this.name = name;
         this.description = description;
         this.deadline = deadline;
@@ -80,11 +82,11 @@ public class Task {
         this.deadline = deadline;
     }
 
-    public String getStatus() {
+    public TaskStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 
@@ -120,7 +122,7 @@ public class Task {
         return this;
     }
 
-    public Task withStatus(String status) {
+    public Task withStatus(TaskStatus status) {
         this.status = status;
         return this;
     }
@@ -132,15 +134,10 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", deadline=" + deadline +
-                ", status='" + status + '\'' +
-                ", user=" + user +
-                '}';
+        return String.format("Task{id=%d, name='%s', description='%s', deadline=%s, status='%s', user=%s}",
+                id, name, description, deadline, status, user);
     }
+
 
 
 }

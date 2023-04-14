@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import taskmanager.model.Task;
+import taskmanager.model.TaskStatus;
 import taskmanager.model.User;
 import taskmanager.service.TaskService;
 import taskmanager.service.UserService;
@@ -60,8 +61,16 @@ public class TaskController {
 
     @GetMapping("/status/{status}")
     public ResponseEntity<List<Task>> getTasksByStatus(@PathVariable String status) {
-        return new ResponseEntity<>(taskService.getTasksByStatus(status), HttpStatus.OK);
+        TaskStatus taskStatus;
+        try {
+            taskStatus = TaskStatus.valueOf(status.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(taskService.getTasksByStatus(taskStatus), HttpStatus.OK);
     }
+
+
 
     @GetMapping("/deadline")
     public ResponseEntity<List<Task>> getTasksByDeadlineRange(@RequestParam("start") String start, @RequestParam("end") String end) {

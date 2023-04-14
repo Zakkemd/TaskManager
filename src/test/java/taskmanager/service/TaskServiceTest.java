@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import taskmanager.model.Task;
+import taskmanager.model.TaskStatus;
 import taskmanager.model.User;
 import taskmanager.repository.TaskRepository;
 
@@ -38,7 +39,7 @@ public class TaskServiceTest {
                 .withName("taskName")
                 .withDescription("taskDescription")
                 .withDeadline(LocalDateTime.of(2023, 12, 1, 12, 30))
-                .withStatus("NOT_COMPLETED");
+                .withStatus(TaskStatus.TODO);
     }
 
 
@@ -116,7 +117,7 @@ public class TaskServiceTest {
     public void shouldGetTasksByStatus() {
         // given
         Task task = getTask();
-        String status = "NOT_COMPLETED";
+        TaskStatus status = TaskStatus.TODO;
         Mockito.when(taskRepository.findByStatus(status)).thenReturn(Collections.singletonList(task));
 
         // when

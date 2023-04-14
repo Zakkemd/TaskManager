@@ -3,6 +3,7 @@ package taskmanager.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import taskmanager.model.Task;
+import taskmanager.model.TaskStatus;
 import taskmanager.model.User;
 
 import java.time.LocalDateTime;
@@ -13,7 +14,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findByUser(User user);
 
-    List<Task> findByStatus(String status);
+    List<Task> findByStatus(TaskStatus status);
 
     List<Task> findByDeadlineBetween(LocalDateTime start, LocalDateTime end);
 

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import taskmanager.model.Task;
+import taskmanager.model.TaskStatus;
 import taskmanager.model.User;
 
 import java.time.LocalDateTime;
@@ -31,11 +32,11 @@ class TaskRepositoryTest {
         user = new User("username", "password", "email@example.com");
         user.setId(1L);
 
-        task1 = new Task("Task 1", "Task 1 description", LocalDateTime.now(), "IN_PROGRESS")
+        task1 = new Task("Task 1", "Task 1 description", LocalDateTime.now(), TaskStatus.IN_PROGRESS)
                 .withId(1L)
                 .withUser(user);
 
-        task2 = new Task("Task 2", "Task 2 description", LocalDateTime.now().plusDays(1), "COMPLETED")
+        task2 = new Task("Task 2", "Task 2 description", LocalDateTime.now().plusDays(1), TaskStatus.DONE)
                 .withId(2L)
                 .withUser(user);
     }
@@ -60,15 +61,15 @@ class TaskRepositoryTest {
     void findByStatus() {
         List<Task> tasks = Arrays.asList(task1);
 
-        when(taskRepository.findByStatus("IN_PROGRESS")).thenReturn(tasks);
+        when(taskRepository.findByStatus(TaskStatus.IN_PROGRESS)).thenReturn(tasks);
 
-        List<Task> result = taskRepository.findByStatus("IN_PROGRESS");
+        List<Task> result = taskRepository.findByStatus(TaskStatus.IN_PROGRESS);
 
         assertNotNull(result);
         assertEquals(1, result.size());
         assertEquals(task1, result.get(0));
 
-        verify(taskRepository, times(1)).findByStatus("IN_PROGRESS");
+        verify(taskRepository, times(1)).findByStatus(TaskStatus.IN_PROGRESS);
     }
 
     @Test

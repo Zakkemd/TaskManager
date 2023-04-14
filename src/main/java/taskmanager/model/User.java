@@ -5,6 +5,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -76,7 +77,7 @@ public class User {
     }
 
     public List<Task> getTasks() {
-        return tasks;
+        return Collections.unmodifiableList(tasks);
     }
 
     public void setTasks(List<Task> tasks) {

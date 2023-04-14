@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import taskmanager.model.Task;
+import taskmanager.model.TaskStatus;
 import taskmanager.model.User;
 import taskmanager.repository.TaskRepository;
 
@@ -51,7 +52,7 @@ public class TaskService {
         return taskRepository.findByUser(user);
     }
 
-    public List<Task> getTasksByStatus(String status) {
+    public List<Task> getTasksByStatus(TaskStatus status) {
         return taskRepository.findByStatus(status);
     }
 
