@@ -58,12 +58,16 @@ git clone https://github.com/Zakkemd/TaskManager.git
 
 This command will create a folder named TaskManager in your current directory, containing the project files.
 
-Download as ZIP
+Download as ZIP.
+
 Alternatively, you can download the project as a ZIP file from the GitHub web interface:
 
-Go to the repository page on GitHub (e.g., https://github.com/Zakkemd/TaskManager.git)
-Click the green "Code" button near the top right corner of the page.
-In the dropdown menu, click "Download ZIP."
+Go to the repository page on GitHub (e.g., https://github.com/Zakkemd/TaskManager.git). 
+
+Click the green "Code" button near the top right corner of the page. 
+
+In the dropdown menu, click "Download ZIP." 
+
 Once the ZIP file is downloaded, extract its contents to a folder on your machine.
 
 ## Configure the `application.properties` file with your database connection details. Replace the following lines with your own MySQL connection settings:
@@ -78,7 +82,9 @@ spring.datasource.password=YOUR_MYSQL_PASSWORD
 
 ##  Running the application:
 Open a terminal/command prompt. For Windows, open the terminal as administrator.
+
 Navigate to the project's root directory using the cd command.
+
 For example, if your project is located in C:\Projects\TaskManager, you would type: cd C:\Projects\TaskManager.
 
 There are two ways to run the application: using mvn spring-boot:run or java -jar. Choose the method that suits your needs.
@@ -86,18 +92,27 @@ There are two ways to run the application: using mvn spring-boot:run or java -ja
 Method 1: Using mvn spring-boot:run (recommended for development and testing)
 
 Open a terminal/command prompt.
-Navigate to the project's root directory using the command cd <path_to_project_root_directory>.
+
+Navigate to the project's root directory using the command cd <path_to_project_root_directory>. 
+
 Run the application with the command: mvn spring-boot:run.
+
 The application will start and listen on port 8080.
 
 Method 2: Using java -jar (recommended for running the packaged JAR file)
 
 Open a terminal/command prompt.
+
 Navigate to the project's root directory using the command cd <path_to_project_root_directory>.
+
 Build the project with the command: mvn clean install. This will create an executable JAR file in the target directory.
+
 Navigate to the target directory using the command cd target.
+
 Run the application with the command: java -jar TaskManager-1.0-SNAPSHOT.jar (replace TaskManager-1.0-SNAPSHOT.jar with the name of your JAR file if it's different).
+
 The application will start and listen on port 8080.
+
 After starting the application using either method, you can access the API by sending requests to http://localhost:8080.
 
 ## API Endpoints
