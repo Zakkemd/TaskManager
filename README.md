@@ -26,18 +26,27 @@ USE taskmanager;
 
 CREATE TABLE users (
 id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
 username VARCHAR(255) NOT NULL UNIQUE,
+
 password VARCHAR(255) NOT NULL,
+
 email VARCHAR(255) NOT NULL UNIQUE
 );
 
 CREATE TABLE tasks (
 id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
 name VARCHAR(255) NOT NULL,
+
 description VARCHAR(255),
+
 deadline DATETIME NOT NULL,
+
 status ENUM('TODO', 'IN_PROGRESS', 'DONE') NOT NULL,
+
 user_id BIGINT NOT NULL,
+
 FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
@@ -60,8 +69,11 @@ Once the ZIP file is downloaded, extract its contents to a folder on your machin
 ## Configure the `application.properties` file with your database connection details. Replace the following lines with your own MySQL connection settings:
 
 spring.datasource.url=jdbc:mysql://localhost:3306/taskmanager?useSSL=false
+
 spring.datasource.username=YOUR_MYSQL_USERNAME
+
 spring.datasource.password=YOUR_MYSQL_PASSWORD
+
 
 
 ##  Running the application:
